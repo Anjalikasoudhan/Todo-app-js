@@ -1,49 +1,199 @@
-*{
-    margin:0;
-    padding:0;
+* {
+    margin: 0;
+    padding: 0;
     box-sizing: border-box;
-    font-family: Arial,sans-serif;
+    font-family: 'Quicksand', sans-serif;
 }
-body{
-    background-color: #f4f4f4;
-    display:flex;
+
+body {
+    background-color: #f0f4f8;
+    /* This creates a repeating pattern of tiny dark blue mascots (Blobs with eyes) */
+    background-image: url("https://as1.ftcdn.net/v2/jpg/01/24/45/90/1000_F_124459087_dVJJHZIta8ux5JkxboWGkI7GpxJyqqQK.jpg");
+    
+    /* Animation to make the background mascots drift slowly */
+    animation: drift 100s linear infinite;
+    
+    display: flex;
     justify-content: center;
     align-items: center;
-    height:100vh;
+    height: 100vh;
+    overflow: hidden;
 }
 
-.container{
+@keyframes drift {
+    from { background-position: 0 0; }
+    to { background-position: 1000px 1000px; }
+}
+
+.container {
     background: white;
-    padding:20px;
-    width:350px;
-    border-radius: 8px;
-    box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    padding: 30px;
+    width: 380px;
+    border-radius: 30px;
+    /* Offset shadow for a "pop" cartoon look */
+    box-shadow: 10px 10px 0px rgba(35, 41, 70, 0.1); 
+    border: 3px solid #232946;
+    position: relative;
+    z-index: 10;
+    animation: appear 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275);
 }
-h1{
+
+@keyframes appear {
+    from { transform: scale(0.8); opacity: 0; }
+    to { transform: scale(1); opacity: 1; }
+}
+
+/* --- THE MAIN CARTOON MASCOT --- */
+.mascot {
+    position: absolute;
+    top: -70px;
+    left: 50%;
+    transform: translateX(-50%);
+}
+
+.ghost {
+    width: 60px;
+    height: 70px;
+    background: #fff;
+    border: 3px solid #232946;
+    border-radius: 50% 50% 0 0;
+    position: relative;
+    animation: float 3s ease-in-out infinite;
+}
+
+/* Ruffles at bottom of ghost */
+.ghost::after {
+    content: '';
+    position: absolute;
+    bottom: -10px;
+    left: -3px;
+    width: 60px;
+    height: 15px;
+    background-image: radial-gradient(circle at 10px 0, #fff 10px, transparent 11px);
+    background-size: 20px 20px;
+}
+
+.eyes {
+    position: absolute;
+    top: 25px;
+    left: 15px;
+    width: 6px;
+    height: 6px;
+    background: #232946;
+    border-radius: 50%;
+    box-shadow: 25px 0 0 #232946;
+}
+
+.blush {
+    position: absolute;
+    top: 32px;
+    left: 8px;
+    width: 8px;
+    height: 4px;
+    background: #ffb7c5;
+    border-radius: 50%;
+    box-shadow: 35px 0 0 #ffb7c5;
+}
+
+@keyframes float {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-15px); }
+}
+
+/* --- UI ELEMENTS --- */
+h1 {
     text-align: center;
-    margin-bottom: 15px;
+    margin-bottom: 20px;
+    color: #232946;
 }
 
-.todo-input{
-  display: flex;
-  gap: 8px;  
+.todo-input {
+    display: flex;
+    gap: 10px;
 }
 
-.todo-input input{
-    flex:1;
-    padding: 8px;
+.todo-input input {
+    flex: 1;
+    padding: 12px 15px;
+    border: 3px solid #232946;
+    border-radius: 15px;
+    outline: none;
+    transition: 0.3s;
 }
 
-.todo-input button{
-    padding:8px 12px;
+.todo-input input:focus {
+    background: #fdf2f4;
+    border-color: #eebbc3;
+}
+
+.todo-input button {
+    padding: 8px 20px;
     cursor: pointer;
+    background: #b8c1ec;
+    border: 3px solid #232946;
+    border-radius: 15px;
+    font-weight: bold;
+    transition: 0.2s;
 }
 
-ul{
-    list-style: none;
-    margin-top: 15px;
+.todo-input button:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 4px 0 #232946;
 }
-.completed{
+
+/* --- TASK LIST --- */
+ul {
+    list-style: none;
+    margin-top: 25px;
+    max-height: 250px;
+    overflow-y: auto;
+    padding-right: 5px;
+}
+
+/* Custom Scrollbar */
+ul::-webkit-scrollbar { width: 5px; }
+ul::-webkit-scrollbar-thumb { background: #232946; border-radius: 10px; }
+
+li {
+    background: #e3f6f5;
+    border: 3px solid #232946;
+    border-radius: 15px;
+    padding: 10px 15px;
+    margin-bottom: 10px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    cursor: pointer;
+    transition: 0.2s;
+    animation: slideIn 0.3s ease-out;
+}
+
+@keyframes slideIn {
+    from { opacity: 0; transform: translateX(-10px); }
+    to { opacity: 1; transform: translateX(0); }
+}
+
+li:hover {
+    transform: translateX(5px);
+    background: #d1efee;
+}
+
+.completed {
     text-decoration: line-through;
-    color:gray;
+    opacity: 0.5;
+    background: #eee !important;
+}
+
+li button {
+    background: #ff8e8e;
+    border: 2px solid #232946;
+    border-radius: 8px;
+    padding: 4px 8px;
+    cursor: pointer;
+    color: white;
+    font-weight: bold;
+}
+
+li button:hover {
+    background: #ff5e5e;
 }
